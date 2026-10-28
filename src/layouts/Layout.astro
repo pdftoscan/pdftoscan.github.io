@@ -1,0 +1,231 @@
+---
+import { SUPPORTED_LANGUAGES, TRANSLATIONS, type LocaleCode } from '../i18n/translations';
+import { pwaInfo } from 'virtual:pwa-info';
+
+interface Props {
+  locale: LocaleCode;
+}
+
+const { locale } = Astro.props;
+const t = TRANSLATIONS[locale];
+const currentLangMeta = SUPPORTED_LANGUAGES.find((l) => l.code === locale) || SUPPORTED_LANGUAGES[0];
+
+const siteOrigin = 'https://pdftoscan.github.io';
+const canonicalUrl = `${siteOrigin}${currentLangMeta.path}`;
+const ogImageUrl = `${siteOrigin}/og-image.svg`;
+
+const jsonLdGraph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebApplication',
+      name: 'PDFtoScan - Make PDF Look Scanned Online Free',
+      url: 'https://pdftoscan.github.io/',
+      description:
+        'Make any PDF document look like a realistic physical scan online for free. Applies authentic 1.5° page tilt, grayscale photocopier contrast, and paper grain 100% locally in your browser with zero server uploads.',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Windows, macOS, iOS, Android, Linux',
+      browserRequirements: 'Requires JavaScript and HTML5 Canvas',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: t.meta.breadcrumbHome,
+          item: 'https://pdftoscan.github.io/',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: t.meta.breadcrumbCurrent,
+          item: canonicalUrl,
+        },
+      ],
+    },
+    {
+      '@type': 'HowTo',
+      name: 'How to Make a PDF Look Scanned Online Free without a Printer',
+      description: t.seoSections.stepsIntro,
+      totalTime: 'PT15S',
+      tool: [
+        {
+          '@type': 'HowToTool',
+          name: 'Web Browser with HTML5 Canvas (Chrome, Safari, Firefox, Edge)',
+        },
+      ],
+      step: t.seoSections.steps.map((s, idx) => ({
+        '@type': 'HowToStep',
+        position: idx + 1,
+        name: s.title,
+        text: s.body,
+        url: `${canonicalUrl}#step-${idx + 1}`,
+      })),
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: t.seoSections.faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.a,
+        },
+      })),
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={currentLangMeta.htmlLang} class="scroll-smooth">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-3DGCQ6Y4J9"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-3DGCQ6Y4J9');
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <meta name="keywords" content={t.meta.keywords} />
+    <meta name="author" content="PDFtoScan" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#15370D" />
+
+    <!-- Canonical & Hreflang Cluster -->
+    <link rel="canonical" href={canonicalUrl} />
+    {
+      SUPPORTED_LANGUAGES.map((lang) => (
+        <link rel="alternate" hreflang={lang.code} href={`${siteOrigin}${lang.path}`} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href="https://pdftoscan.github.io/" />
+
+    <!-- Icons & PWA -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="PDFtoScan" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={currentLangMeta.htmlLang.replace('-', '_')} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={t.meta.title} />
+    <meta name="twitter:description" content={t.meta.description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Structured Data JSON-LD (@graph) -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLdGraph)} />
+
+    <!-- Theme Initialization (Light Mode Default) -->
+    <script is:inline>
+      (function () {
+        try {
+          const savedTheme = localStorage.getItem('pdftoscan-theme');
+          if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <style is:global>
+      /* Oversized accessible range slider styling */
+      input[type='range'].oversized-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 16px;
+        border-radius: 9999px;
+        background: #e5cd82;
+        border: 2px solid #15370d;
+        outline: none;
+        cursor: pointer;
+        transition: box-shadow 0.2s ease, background-color 0.2s ease;
+      }
+      .dark input[type='range'].oversized-slider {
+        background: #15370d;
+        border-color: #e5cd82;
+      }
+      input[type='range'].oversized-slider:focus-visible {
+        box-shadow: 0 0 0 4px #e5cd82, 0 0 0 7px #15370d;
+      }
+      input[type='range'].oversized-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 9999px;
+        background: #15370d;
+        border: 4px solid #fff2b4;
+        box-shadow: 0 3px 10px rgba(21, 55, 13, 0.45);
+        cursor: grab;
+        transition: transform 0.15s ease, background-color 0.15s ease;
+      }
+      .dark input[type='range'].oversized-slider::-webkit-slider-thumb {
+        background: #e5cd82;
+        border: 4px solid #15370d;
+        box-shadow: 0 3px 12px rgba(229, 205, 130, 0.45);
+      }
+      input[type='range'].oversized-slider::-webkit-slider-thumb:hover {
+        transform: scale(1.12);
+      }
+      input[type='range'].oversized-slider::-webkit-slider-thumb:active {
+        cursor: grabbing;
+        transform: scale(1.18);
+      }
+      input[type='range'].oversized-slider::-moz-range-thumb {
+        width: 32px;
+        height: 32px;
+        border-radius: 9999px;
+        background: #15370d;
+        border: 4px solid #fff2b4;
+        box-shadow: 0 3px 10px rgba(21, 55, 13, 0.45);
+        cursor: grab;
+        transition: transform 0.15s ease;
+      }
+      .dark input[type='range'].oversized-slider::-moz-range-thumb {
+        background: #e5cd82;
+        border: 4px solid #15370d;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen flex flex-col bg-[#FFFDF5] text-[#15370D] dark:bg-[#15370D] dark:text-[#FFF2B4] font-sans antialiased selection:bg-[#E5CD82] selection:text-[#15370D] transition-colors duration-200"
+  >
+    <slot />
+
+    <!-- Service Worker Registration -->
+    <script>
+      import { registerSW } from 'virtual:pwa-register';
+      if (typeof window !== 'undefined') {
+        registerSW({ immediate: true });
+      }
+    </script>
+  </body>
+</html>

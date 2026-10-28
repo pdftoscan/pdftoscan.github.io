@@ -1,0 +1,252 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from './Navbar.astro';
+import PdfScannerIsland from './PdfScannerIsland';
+import { SUPPORTED_LANGUAGES, TRANSLATIONS, type LocaleCode } from '../i18n/translations';
+
+interface Props {
+  locale: LocaleCode;
+}
+
+const { locale } = Astro.props;
+const t = TRANSLATIONS[locale];
+const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === locale) || SUPPORTED_LANGUAGES[0];
+---
+
+<Layout locale={locale}>
+  <Navbar locale={locale} />
+
+  <main id="main-content" class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+    <!-- Visible Semantic Breadcrumb Navigation -->
+    <nav aria-label="Breadcrumb" class="mb-6">
+      <ol class="flex flex-wrap items-center gap-2 text-base md:text-lg font-bold text-[#728E6D] dark:text-[#E5CD82]">
+        <li>
+          <a
+            href="https://pdftoscan.github.io/"
+            class="underline decoration-2 underline-offset-4 hover:text-[#15370D] dark:hover:text-[#FFF2B4] transition-colors"
+          >
+            {t.meta.breadcrumbHome}
+          </a>
+        </li>
+        <li aria-hidden="true" class="select-none font-black">/</li>
+        <li aria-current="page" class="text-[#15370D] dark:text-[#FFF2B4] font-extrabold">
+          {t.meta.breadcrumbCurrent}
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Hero Section (Single H1 on the Page) -->
+    <section aria-labelledby="hero-heading" class="text-center max-w-4xl mx-auto mb-8 md:mb-12">
+      <h1
+        id="hero-heading"
+        class="text-4xl md:text-6xl font-extrabold tracking-tight text-[#15370D] dark:text-[#FFF2B4] leading-[1.12] mb-5"
+      >
+        {t.hero.h1}
+      </h1>
+
+      <p class="text-lg md:text-xl font-medium text-[#15370D]/90 dark:text-[#FFF2B4]/90 leading-relaxed max-w-3xl mx-auto">
+        {t.hero.subtitle}
+      </p>
+    </section>
+
+    <!-- Interactive Scanner Workspace (Dropzone + Live 60fps Studio) -->
+    <section aria-label="Interactive PDF Scanner Studio" class="mb-16 md:mb-24">
+      <PdfScannerIsland client:load t={t} />
+    </section>
+
+    <!-- SECTION 1: How to Make a PDF Look Like Scanned in 3 Simple Steps -->
+    <section
+      id="how-to-scan"
+      aria-labelledby="steps-heading"
+      class="mb-16 md:mb-24 rounded-3xl border-4 border-[#15370D] dark:border-[#728E6D] bg-[#FFF2B4]/55 dark:bg-[#1E4615] p-6 sm:p-10 md:p-12 shadow-xl"
+    >
+      <div class="max-w-3xl mb-8">
+        <h2
+          id="steps-heading"
+          class="text-2xl md:text-3xl font-bold text-[#15370D] dark:text-[#FFF2B4] mb-4"
+        >
+          {t.seoSections.stepsHeading}
+        </h2>
+        <p class="text-lg md:text-xl font-medium text-[#15370D]/90 dark:text-[#FFF2B4]/90 leading-relaxed">
+          {t.seoSections.stepsIntro}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {
+          t.seoSections.steps.map((step, index) => (
+            <article
+              id={`step-${index + 1}`}
+              class="rounded-2xl border-2 border-[#15370D] dark:border-[#E5CD82] bg-[#FFFDF5] dark:bg-[#15370D] p-6 flex flex-col justify-between shadow-md"
+            >
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-[#15370D] dark:bg-[#E5CD82] text-[#FFF2B4] dark:text-[#15370D] font-black text-2xl flex items-center justify-center mb-4">
+                  {index + 1}
+                </div>
+                <h3 class="text-xl md:text-2xl font-extrabold text-[#15370D] dark:text-[#FFF2B4] mb-3">
+                  {step.title}
+                </h3>
+                <p class="text-lg font-medium text-[#15370D]/90 dark:text-[#FFF2B4]/90 leading-relaxed">
+                  {step.body}
+                </p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- SECTION 2: Why Flatten & Scan PDF Documents Online (Contracts, Signatures & Compliance) -->
+    <section id="why-flatten" aria-labelledby="why-heading" class="mb-16 md:mb-24">
+      <div class="max-w-3xl mb-8">
+        <h2
+          id="why-heading"
+          class="text-2xl md:text-3xl font-bold text-[#15370D] dark:text-[#FFF2B4] mb-4"
+        >
+          {t.seoSections.whyHeading}
+        </h2>
+        <p class="text-lg md:text-xl font-medium text-[#15370D]/90 dark:text-[#FFF2B4]/90 leading-relaxed">
+          {t.seoSections.whyIntro}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {
+          t.seoSections.whyCards.map((card) => (
+            <article class="rounded-3xl border-3 border-2 border-[#15370D] dark:border-[#728E6D] bg-[#FFF2B4]/40 dark:bg-[#1E4615] p-6 sm:p-8 shadow-lg">
+              <h3 class="text-xl md:text-2xl font-extrabold text-[#15370D] dark:text-[#E5CD82] mb-3">
+                {card.title}
+              </h3>
+              <p class="text-lg font-medium text-[#15370D]/90 dark:text-[#FFF2B4]/90 leading-relaxed">
+                {card.body}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- SECTION 3: 100% Client-Side Privacy: How WebAssembly & HTML5 Canvas Protect Your Sensitive PDFs -->
+    <section
+      id="privacy-security"
+      aria-labelledby="privacy-heading"
+      class="mb-16 md:mb-24 rounded-3xl border-4 border-[#15370D] dark:border-[#E5CD82] bg-[#15370D] dark:bg-[#1E4615] text-[#FFF2B4] p-6 sm:p-10 md:p-12 shadow-2xl"
+    >
+      <div class="max-w-4xl">
+        <h2 id="privacy-heading" class="text-2xl md:text-3xl font-bold text-[#E5CD82] mb-4">
+          {t.seoSections.privacyHeading}
+        </h2>
+        <p class="text-lg md:text-xl font-medium text-[#FFF2B4] leading-relaxed mb-4">
+          {t.seoSections.privacyBody1}
+        </p>
+        <p class="text-lg md:text-xl font-medium text-[#FFF2B4] leading-relaxed mb-8">
+          {t.seoSections.privacyBody2}
+        </p>
+
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {
+            t.seoSections.privacyBullets.map((bullet) => (
+              <li class="flex items-start gap-3 p-4 rounded-2xl bg-[#1E4615] dark:bg-[#15370D] border-2 border-[#728E6D]">
+                <span class="mt-1 inline-flex w-6 h-6 rounded-full bg-[#E5CD82] text-[#15370D] font-black items-center justify-center shrink-0">
+                  ✓
+                </span>
+                <span class="text-lg font-medium text-[#FFF2B4] leading-snug">{bullet}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Interactive FAQ Section -->
+    <section id="faq" aria-labelledby="faq-heading" class="mb-12">
+      <div class="max-w-3xl mb-8">
+        <h2
+          id="faq-heading"
+          class="text-2xl md:text-3xl font-bold text-[#15370D] dark:text-[#FFF2B4] mb-3"
+        >
+          {t.seoSections.faqHeading}
+        </h2>
+        <p class="text-lg md:text-xl font-medium text-[#728E6D] dark:text-[#E5CD82]">
+          {t.seoSections.faqIntro}
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        {
+          t.seoSections.faqs.map((faq, idx) => (
+            <details
+              class="group rounded-2xl border-2 border-[#15370D] dark:border-[#728E6D] bg-[#FFF2B4]/55 dark:bg-[#1E4615] p-5 sm:p-6 transition-all"
+              open={idx === 0}
+            >
+              <summary class="flex items-center justify-between gap-4 cursor-pointer list-none font-extrabold text-xl md:text-2xl text-[#15370D] dark:text-[#FFF2B4]">
+                <h3>{faq.q}</h3>
+                <span class="w-10 h-10 rounded-xl bg-[#15370D] dark:bg-[#E5CD82] text-[#FFF2B4] dark:text-[#15370D] flex items-center justify-center font-black text-2xl shrink-0 group-open:rotate-45 transition-transform">
+                  +
+                </span>
+              </summary>
+              <p class="mt-4 pt-4 border-t-2 border-[#728E6D]/40 text-lg md:text-xl font-medium text-[#15370D]/95 dark:text-[#FFF2B4]/95 leading-relaxed">
+                {faq.a}
+              </p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <!-- Semantic Footer with 8-Language Localization Bar & Ko-fi Developer Support -->
+  <footer
+    class="w-full border-t-4 border-[#15370D] dark:border-[#728E6D] bg-[#FFF2B4]/60 dark:bg-[#1E4615] py-12 px-4 sm:px-6 lg:px-8 mt-auto"
+  >
+    <div class="max-w-7xl mx-auto flex flex-col gap-8">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div>
+          <div class="text-2xl font-black text-[#15370D] dark:text-[#FFF2B4] mb-2">PDFtoScan</div>
+          <p class="text-lg font-medium text-[#15370D]/90 dark:text-[#FFF2B4]/90 max-w-xl">
+            {t.footer.tagline}
+          </p>
+        </div>
+
+        <a
+          href="https://ko-fi.com/kishara"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="min-h-[56px] px-7 py-4 rounded-2xl bg-[#15370D] dark:bg-[#E5CD82] text-[#FFF2B4] dark:text-[#15370D] font-extrabold text-lg md:text-xl border-2 border-[#15370D] dark:border-[#FFF2B4] shadow-lg hover:scale-[1.02] transition-transform inline-flex items-center gap-3"
+        >
+          <span>♥</span>
+          <span>{t.footer.supportCta}</span>
+        </a>
+      </div>
+
+      <!-- 8-Language Static Route Links for Crawlers & Users -->
+      <nav aria-label="Language Switcher Footer" class="pt-6 border-t-2 border-[#728E6D]/40">
+        <ul class="flex flex-wrap items-center gap-3">
+          {
+            SUPPORTED_LANGUAGES.map((lang) => (
+              <li>
+                <a
+                  href={lang.path}
+                  hreflang={lang.code}
+                  class={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold text-base border-2 transition-colors ${
+                    lang.code === locale
+                      ? 'bg-[#15370D] text-[#FFF2B4] dark:bg-[#E5CD82] dark:text-[#15370D] border-[#15370D] dark:border-[#FFF2B4]'
+                      : 'bg-[#FFFDF5] dark:bg-[#15370D] text-[#15370D] dark:text-[#FFF2B4] border-[#728E6D] hover:bg-[#E5CD82] dark:hover:text-[#15370D]'
+                  }`}
+                >
+                  <span class="text-xs font-black px-1.5 py-0.5 rounded border border-current">{lang.badge}</span>
+                  <span>{lang.label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 text-base font-bold text-[#728E6D] dark:text-[#E5CD82]">
+        <p>{t.footer.copyright}</p>
+        <p>{t.footer.licenseText}</p>
+      </div>
+    </div>
+  </footer>
+</Layout>

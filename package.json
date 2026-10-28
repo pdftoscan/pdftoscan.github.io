@@ -1,0 +1,34 @@
+{
+  "name": "pdftoscan.github.io",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Make PDF Look Scanned Online Free | Realistic Document Scanner Effect (100% Client-Side)",
+  "license": "MIT",
+  "scripts": {
+    "predev": "node -e \"const fs=require('fs');if(fs.existsSync('node_modules/pdfjs-dist/build/pdf.worker.min.js'))fs.copyFileSync('node_modules/pdfjs-dist/build/pdf.worker.min.js','public/pdf.worker.min.js')\"",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "prebuild": "node -e \"const fs=require('fs');if(fs.existsSync('node_modules/pdfjs-dist/build/pdf.worker.min.js'))fs.copyFileSync('node_modules/pdfjs-dist/build/pdf.worker.min.js','public/pdf.worker.min.js')\"",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^3.6.2",
+    "@astrojs/sitemap": "^3.1.6",
+    "@astrojs/tailwind": "^5.1.2",
+    "@vite-pwa/astro": "latest",
+    "astro": "^4.16.18",
+    "jspdf": "^2.5.2",
+    "lucide-react": "^0.468.0",
+    "pdfjs-dist": "3.11.174",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.7.2"
+  }
+}
