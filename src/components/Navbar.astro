@@ -52,8 +52,8 @@ const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === locale) || SUPPOR
       </div>
     </a>
 
-    <!-- DESKTOP Navigation Actions (lg / md >= 768px) -->
-    <div class="hidden md:flex items-center gap-3">
+    <!-- DESKTOP Navigation Actions (xl >= 1280px) -->
+    <div class="hidden xl:flex items-center gap-3">
       <!-- 1. 8-Language Selector Dropdown -->
       <div class="relative" id="lang-dropdown-wrapper">
         <button
@@ -238,8 +238,8 @@ const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === locale) || SUPPOR
       </a>
     </div>
 
-    <!-- MOBILE & TABLET Toggle Button (< 768px) -->
-    <div class="flex md:hidden items-center gap-2">
+    <!-- MOBILE & TABLET Toggle Button (all phones & tablets < 1280px) -->
+    <div class="flex xl:hidden items-center gap-2">
       <button
         type="button"
         id="mobile-menu-toggle-btn"
@@ -285,12 +285,12 @@ const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === locale) || SUPPOR
     </div>
   </div>
 
-  <!-- MOBILE & TABLET Collapsible Navigation Drawer (< 768px) -->
+  <!-- MOBILE & TABLET Collapsible Navigation Drawer (< 1280px) -->
   <div
     id="mobile-nav-drawer"
-    class="hidden md:hidden border-t-2 border-[#15370D] dark:border-[#728E6D] bg-[#FFFDF5] dark:bg-[#1E4615] px-4 pt-4 pb-6 shadow-2xl"
+    class="hidden xl:hidden border-t-2 border-[#15370D] dark:border-[#728E6D] bg-[#FFFDF5] dark:bg-[#1E4615] px-4 pt-4 pb-6 shadow-2xl"
   >
-    <div class="flex flex-col gap-4 max-w-lg mx-auto">
+    <div class="flex flex-col gap-4 max-w-2xl mx-auto">
       <!-- Quick Action Row: Theme Toggle, Install PWA, Support Developer -->
       <div class="grid grid-cols-3 gap-3">
         <!-- Theme Switcher Mobile -->
